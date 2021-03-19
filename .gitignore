@@ -1,0 +1,4 @@
+node_modules
+/plugin/vendor
+/wp-data
+.devcontainer/.env
