@@ -22,6 +22,8 @@ The setup consists of 3 containers:
 By default, VSCode attaches to the Node container. The container has access to the full project folder so you can develop both the app and the plugin/theme code from here.
 
 ### Wordpress development
+By default the containers are set up for plugin development. To switch to theme development, change `PROJECT_TYPE` to theme in .env and rename the "plugin" folder to "theme".
+
 For wordpress development, some extensions are included in the container by default:
 * [PHP Intelephense](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client)
 * [Wordpress Snippets](https://marketplace.visualstudio.com/items?itemName=wordpresstoolbox.wordpress-toolbox)
