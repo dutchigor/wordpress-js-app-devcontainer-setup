@@ -51,7 +51,6 @@ services:
       - ./docker/wp-setup.sh:/usr/local/bin/wpsetup
     user: "33:33"
     command: ["wpsetup"]
-    # command: [ "sleep", "1000" ]
 
 volumes:
   wordpress:
