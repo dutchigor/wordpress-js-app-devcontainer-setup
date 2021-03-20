@@ -1,4 +1,5 @@
 node_modules
 /plugin/vendor
+/theme/vendor
 /wp-data
 .devcontainer/.env
