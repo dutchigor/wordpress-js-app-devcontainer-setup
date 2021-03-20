@@ -7,7 +7,7 @@ This setup uses Docker for developing a wordpress plugin or theme in conjunction
 ## Set up
 Prerequisite: requires VSCode extension Remote - Containers.
 
-1. Update the .env variables in .devcontainer.
+1. Update the .env variables in .docker.
 2. Place Javascript app code in root folder. If you replace package.json, make sure you move the wpsetup script to your package.json
 3. Place plugin or theme code in plugin folder
 4. Run command `Remote-containers: Reopen in Container`

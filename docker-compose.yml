@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  # MySQL database
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${WORDPRESS_DB_NAME}
+      MYSQL_USER: ${WORDPRESS_DB_USER}
+      MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: ${MYSQL_RANDOM_ROOT_PASSWORD}
+    volumes:
+      - db:/var/lib/mysql
+      - ./wp-data:/docker-entrypoint-initdb.d
+
+  # WordPress core installation
+  wordpress:
+    image: wordpress/local
+    build: 
+      context: docker
+      dockerfile: wordpress.Dockerfile
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - ${WORDPRESS_PORT}:80
+    environment:
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_NAME
+      - WORDPRESS_DB_USER
+      - WORDPRESS_DB_PASSWORD
+    volumes:
+      - wordpress:/var/www/html
+      - ./${PROJECT_TYPE}:/var/www/html/wp-content/plugins/${PROJECT_NAME}
+
+  # Wordpress CLI
+  wpcli:
+    image: wordpress:cli
+    depends_on:
+      - db
+      - wordpress
+    restart: on-failure
+    env_file: 
+      - .env
+    environment:
+      - WORDPRESS_DB_HOST=db    
+    volumes_from:
+      - wordpress
+    volumes:
+      - ./docker/wp-setup.sh:/usr/local/bin/wpsetup
+    user: "33:33"
+    command: ["wpsetup"]
+    # command: [ "sleep", "1000" ]
+
+volumes:
+  wordpress:
+  db:
