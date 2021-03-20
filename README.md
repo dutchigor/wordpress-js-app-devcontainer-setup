@@ -73,6 +73,15 @@ For now, database exports can be done using the MySQL extension. I hope to inclu
 ## To do
 * Include Composer and make it accessible from the Node Container
 * Create db export script
+* Add list of recommended plugins
+* Add npm scripts for:
+    * Starting WordPress
+    * Stopping WordPress
+    * Restarting WordPress
+    * Applying new environment variables
+    * Resetting WordPress
+* Custom domain name support
+* Handle waiting for DB before running CLI better
 
 ## License
 Distributed under the MIT License. See `LICENSE` for more information.
