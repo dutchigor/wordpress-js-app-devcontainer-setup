@@ -4,9 +4,20 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "wp": "docker-compose run --rm wpcli"
+    "wpstart": "docker-compose up -d && docker-compose exec wordpress wpsetup",
+    "wpstop": "docker-compose down",
+    "wprestart": "docker-compose restart && docker-compose exec wordpress wpsetup",
+    "wpenvupdate": "docker-compose run --rm -e WP_ENV_UPDATE=true wordpress wpsetup",
+    "wpreset": "docker-compose down -v && npm run wpstart",
+    "wp": "docker-compose exec -e XDEBUG_TRIGGER=0 wordpress wp"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "tasks": [
+    {
+      "label": "echo",
+      "type": "shell",
+      "command": "echo ${env:MYSQL_DATABASE}"
+    }
+  ]
 }

@@ -1,19 +1,23 @@
 #!/bin/sh
+# Prevent xdebug from throwing errors
+unset XDEBUG_TRIGGER;
+
 # Path to WordPress installation
 wp_path="/var/www/html";
 
-# Give the db some time to start up
-# sleep 5
+# Ensure the database is up
+echo "waiting for database connection...";
+wait-for db:3306 -t 120;
 
 # Exit if WordPress is already installed and update is not forced
-if [ "$CONFIGURE_WP" != "true" ]; then
+if [ "$WP_ENV_UPDATE" != "true" ]; then
   if wp core is-installed --path=${wp_path}; then
     echo WordPress is already installed;
     exit 0;
   fi
 elif [ "$#" -gt 0 ]; then
   echo the only valid flag is -i\: install only;
-  exit 1;
+  exit 0;
 fi
 
 # Set up wordpress if not done already
@@ -26,10 +30,6 @@ wp core install \
   --admin_email="$ADMIN_EMAIL" \
   --admin_password="$ADMIN_PASS" \
   --skip-email;
-if [ "$?" -eq 1 ]; then
-  sleep 5;
-  exit 1;
-fi
 
 # Install theme
 if [ -n "${INSTALL_THEME}" ]; then
@@ -42,6 +42,7 @@ fi
 # Install 3rd party plugins
 if [ -n "${INSTALL_PLUGINS}" ]; then
   echo Installing plugins\: ${INSTALL_PLUGINS};
+  wp plugin deactivate --all;
   wp plugin install ${INSTALL_PLUGINS} --activate --path=${wp_path};
 else
   echo No 3rd party plugins provided;

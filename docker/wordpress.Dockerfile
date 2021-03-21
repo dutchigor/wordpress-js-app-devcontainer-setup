@@ -1,11 +1,20 @@
 FROM wordpress:latest
 
-# Set php parameters
-COPY php.wp.ini /usr/local/etc/php/conf.d/
+# Install WP-cli and grant access to WordPress
+RUN chown www-data:www-data /var/www \
+  && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+  && chmod +x wp-cli.phar \
+  && mv wp-cli.phar /usr/local/bin/wp
 
 # Enable xdebug
-COPY xdebug.ini /usr/local/etc/php/conf.d/
 RUN pecl install "xdebug" && docker-php-ext-enable xdebug
 
-# Set default user
+# Prepare initialisation script
+RUN apt-get -q update && apt-get -qy install netcat
+ADD https://github.com/eficode/wait-for/releases/download/v2.1.1/wait-for /usr/local/bin/
+COPY wp-setup.sh /usr/local/bin/wpsetup
+RUN chmod +x /usr/local/bin/wpsetup \
+  && chmod +rx /usr/local/bin/wait-for
+
+# prepare for CLI execution
 USER www-data

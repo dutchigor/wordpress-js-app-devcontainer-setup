@@ -1,17 +1,4 @@
 {
   "sqltools.connections": [
-    {
-      "mysqlOptions": {
-        "authProtocol": "default"
-      },
-      "previewLimit": 50,
-      "server": "localhost",
-      "port": 3306,
-      "driver": "MySQL",
-      "name": "WordPressDB",
-      "database": "${env:MYSQL_DATABASE}",
-      "username": "${env:MYSQL_USER}",
-      "password": "${env:examplepass}"
-    }
   ]
 }
